@@ -3,7 +3,7 @@
 cran <- c("BiocManager", "ggplot2", "remotes")
 install.packages(cran)
 
-bioc <- c("edgeR", "limma")
+bioc <- c("edgeR", "limma", "Mus.musculus")
 BiocManager::install(bioc, update = FALSE)
 
 github <- c("abbvie-external/OmicNavigator@*release")
