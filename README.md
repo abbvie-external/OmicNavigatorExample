@@ -21,3 +21,20 @@ results.
 * [`build.R`](./build.R) - Builds the OmicNavigator study package from the
 results files that [`analyze.R`](./analyze.R) exported to
 [`results/`](./results/)
+
+## Acknowledgements
+
+The example limma+voom code was adapted from the Bioconductor workflow
+[RNAseq123](https://bioconductor.org/packages/release/workflows/html/RNAseq123.html).
+
+If you use the code, please cite:
+
+> Law CW, Alhamdoosh M, Su S et al. RNA-seq analysis is easy as 1-2-3
+> with limma, Glimma and edgeR [version 2; referees: 3 approved].
+> F1000Research 2016, 5:1408 (doi: 10.12688/f1000research.9005.2)
+
+If you use the data please cite:
+
+> Sheridan JM, Ritchie ME, Best SA, et al.: A pooled shRNA screen for
+> regulators of primary mammary stem and progenitor cells identifies
+> roles for Asap1 and Prox1. BMC Cancer. 2015; 15(1): 221.

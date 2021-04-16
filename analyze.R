@@ -12,7 +12,7 @@ files <- Sys.glob("data/*txt")
 x <- readDGE(files, columns = c(1, 3))
 
 # Organize sample data
-samplenames <- basename(colnames(x))
+samplenames <- make.names(basename(colnames(x)))
 colnames(x) <- samplenames
 x$samples <- cbind(samplenames, x$samples)
 group <- as.factor(c("LP", "ML", "Basal", "Basal", "ML", "LP",
