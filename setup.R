@@ -16,3 +16,4 @@ for (pkg in bioc) {
 
 github <- c("abbvie-external/OmicNavigator@*release")
 remotes::install_github(github, dependencies = TRUE, upgrade = FALSE)
+OmicNavigator::installApp()

@@ -20,7 +20,7 @@ results.
 
 * [`build.R`](./build.R) - Builds the OmicNavigator study package from the
 results files that [`analyze.R`](./analyze.R) exported to
-[`results/`](./results/)
+[`results/`](./results/). Installs the study package and starts the web app.
 
 ## Acknowledgements
 

@@ -118,8 +118,6 @@ barcodes <- list(
 )
 study <- addBarcodes(study, barcodes = barcodes)
 
-
-
 reports <- list(
   main = "https://github.com/abbvie-external/OmicNavigatorExample/blob/main/analyze.R"
 )
@@ -155,4 +153,6 @@ plotStudy(study, modelID = "main", featureID = "497097",
 plotStudy(study, modelID = "main", featureID = "27395",
           plotID = "expression_by_cell_type")
 
-exportStudy(study)
+installStudy(study)
+message("Starting app. Should open in new browser tab.")
+startApp()
