@@ -119,7 +119,7 @@ barcodes <- list(
 study <- addBarcodes(study, barcodes = barcodes)
 
 reports <- list(
-  main = "https://github.com/abbvie-external/OmicNavigatorExample/blob/main/analyze.R"
+  main = "results/report.html"
 )
 study <- addReports(study, reports)
 

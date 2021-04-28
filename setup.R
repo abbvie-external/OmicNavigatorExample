@@ -1,6 +1,6 @@
 # Installs the required packages from CRAN, Bioconductor, and GitHub.
 
-cran <- c("BiocManager", "ggplot2", "remotes")
+cran <- c("BiocManager", "ggplot2", "remotes", "rmarkdown")
 for (pkg in cran) {
   if (!requireNamespace(pkg, quietly = TRUE)) {
     install.packages(pkg)

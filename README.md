@@ -22,6 +22,30 @@ results.
 results files that [`analyze.R`](./analyze.R) exported to
 [`results/`](./results/). Installs the study package and starts the web app.
 
+## Run the code
+
+1. Install R package dependencies
+
+    ```
+    source("setup.R")
+    ```
+
+1. Perform the differential expression analysis. This reads the input files in
+`data/` and exports the output files to `results/`
+
+    ```
+    library(rmarkdown)
+    render("analyze.R")
+    ```
+
+1. Create and install the OmicNavigator study package. This reads the analysis
+results files in `results/`, converts them to an OmicNavigator study package,
+installs the package, and starts the app.
+
+    ```
+    source("build.R")
+    ```
+
 ## Acknowledgements
 
 The example limma+voom code was adapted from the Bioconductor workflow
