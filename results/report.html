@@ -415,13 +415,23 @@ summary {
 
 <div id="TOC">
 <ul>
+<li><a href="#introduction">Introduction</a></li>
 <li><a href="#prepare-data">Prepare data</a></li>
 <li><a href="#differential-expression-analysis">Differential expression analysis</a></li>
 <li><a href="#enrichment-analysis">Enrichment analysis</a></li>
 <li><a href="#export-results">Export results</a></li>
+<li><a href="#citations">Citations</a></li>
 </ul>
 </div>
 
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This example limma+voom code was adapted from the Bioconductor workflow <a href="https://bioconductor.org/packages/release/workflows/html/RNAseq123.html">RNAseq123</a> to demonstrate how to use OmicNavigator. Please see the section <a href="#citations">Citations</a> for more details.</p>
+<p>Below is the description of the experiment from the <a href="https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html">RNAseq123 vignette</a>:</p>
+<blockquote>
+<p>The experiment analysed in this workflow is from Sheridan et al. (2015) (Sheridan et al. 2015) and consists of three cell populations (basal, luminal progenitor (LP) and mature luminal (ML)) sorted from the mammary glands of female virgin mice, each profiled in triplicate. RNA samples were sequenced across three batches on an Illumina HiSeq 2000 to obtain 100 base-pair single-end reads. The analysis outlined in this article assumes that reads obtained from an RNA-seq experiment have been aligned to an appropriate reference genome and summarised into counts associated with gene-specific regions. In this instance, reads were aligned to the mouse reference genome (mm10) using the R based pipeline available in the Rsubread package (specifically the align function (Liao, Smyth, and Shi 2013) followed by featureCounts (Liao, Smyth, and Shi 2014) for gene-level summarisation based on the in-built mm10 RefSeq-based annotation).</p>
+</blockquote>
+</div>
 <div id="prepare-data" class="section level2">
 <h2>Prepare data</h2>
 <p>Load required packages</p>
@@ -519,6 +529,15 @@ export(create_results_table(efit, &quot;LPvsML&quot;), &quot;results/LPvsML.txt&
 export(enrichedBasalvsLP, &quot;results/enrichedBasalvsLP.txt&quot;, row.names = TRUE)
 export(enrichedBasalvsML, &quot;results/enrichedBasalvsML.txt&quot;, row.names = TRUE)
 export(enrichedLPvsML, &quot;results/enrichedLPvsML.txt&quot;, row.names = TRUE)</code></pre>
+</div>
+<div id="citations" class="section level2">
+<h2>Citations</h2>
+<blockquote>
+<p>Law CW, Alhamdoosh M, Su S et al. RNA-seq analysis is easy as 1-2-3 with limma, Glimma and edgeR [version 2; referees: 3 approved]. F1000Research 2016, 5:1408 (doi: 10.12688/f1000research.9005.2)</p>
+</blockquote>
+<blockquote>
+<p>Sheridan JM, Ritchie ME, Best SA, et al.: A pooled shRNA screen for regulators of primary mammary stem and progenitor cells identifies roles for Asap1 and Prox1. BMC Cancer. 2015; 15(1): 221.</p>
+</blockquote>
 </div>
 
 

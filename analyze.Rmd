@@ -5,6 +5,32 @@ output:
     toc: true
 ---
 
+## Introduction
+
+This example limma+voom code was adapted from the Bioconductor workflow
+[RNAseq123](https://bioconductor.org/packages/release/workflows/html/RNAseq123.html)
+to demonstrate how to use OmicNavigator. Please see the section
+[Citations](#citations) for more details.
+
+Below is the description of the experiment from the [RNAseq123
+vignette][vignette]:
+
+[vignette]: https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html
+
+> The experiment analysed in this workflow is from Sheridan et al. (2015)
+> (Sheridan et al. 2015) and consists of three cell populations (basal, luminal
+> progenitor (LP) and mature luminal (ML)) sorted from the mammary glands of
+> female virgin mice, each profiled in triplicate. RNA samples were sequenced
+> across three batches on an Illumina HiSeq 2000 to obtain 100 base-pair
+> single-end reads. The analysis outlined in this article assumes that reads
+> obtained from an RNA-seq experiment have been aligned to an appropriate
+> reference genome and summarised into counts associated with gene-specific
+> regions. In this instance, reads were aligned to the mouse reference genome
+> (mm10) using the R based pipeline available in the Rsubread package
+> (specifically the align function (Liao, Smyth, and Shi 2013) followed by
+> featureCounts (Liao, Smyth, and Shi 2014) for gene-level summarisation based on
+> the in-built mm10 RefSeq-based annotation).
+
 ## Prepare data
 
 Load required packages
@@ -140,3 +166,13 @@ export(enrichedBasalvsLP, "results/enrichedBasalvsLP.txt", row.names = TRUE)
 export(enrichedBasalvsML, "results/enrichedBasalvsML.txt", row.names = TRUE)
 export(enrichedLPvsML, "results/enrichedLPvsML.txt", row.names = TRUE)
 ```
+
+## Citations
+
+> Law CW, Alhamdoosh M, Su S et al. RNA-seq analysis is easy as 1-2-3
+> with limma, Glimma and edgeR [version 2; referees: 3 approved].
+> F1000Research 2016, 5:1408 (doi: 10.12688/f1000research.9005.2)
+
+> Sheridan JM, Ritchie ME, Best SA, et al.: A pooled shRNA screen for
+> regulators of primary mammary stem and progenitor cells identifies
+> roles for Asap1 and Prox1. BMC Cancer. 2015; 15(1): 221.

@@ -1,7 +1,13 @@
 # How to create an OmicNavigator study
 
-This repository contains an example of how to convert an omic analysis into a
-study package to be explored with the OmicNavigator app.
+This repository contains an example of how to use the [OmicNavigator R
+package][on-rpkg] to convert an omic analysis into a study package to be
+explored with the [OmicNavigator app][on-app]. For more details, please see the
+User's Guide attached to the [latest release][latest].
+
+[on-rpkg]: https://github.com/abbvie-external/OmicNavigator
+[on-app]: https://github.com/abbvie-external/OmicNavigatorWebApp
+[latest]: https://github.com/abbvie-external/OmicNavigator/releases/latest
 
 **Files:**
 
@@ -24,6 +30,11 @@ results files that [`analyze.Rmd`](./analyze.Rmd) exported to
 [`results/`](./results/). Installs the study package and starts the web app.
 
 ## Run the code
+
+Follow the steps below to install the dependencies, perform the analysis, and
+create the OmicNavigator study package. Note that the analysis results are
+already available in `results/`, so if you want you can skip running
+`analysis.Rmd` and go straight to running `build.R`.
 
 1. Install R package dependencies
 
@@ -58,7 +69,7 @@ If you use the code, please cite:
 > with limma, Glimma and edgeR [version 2; referees: 3 approved].
 > F1000Research 2016, 5:1408 (doi: 10.12688/f1000research.9005.2)
 
-If you use the data please cite:
+If you use the data, please cite:
 
 > Sheridan JM, Ritchie ME, Best SA, et al.: A pooled shRNA screen for
 > regulators of primary mammary stem and progenitor cells identifies

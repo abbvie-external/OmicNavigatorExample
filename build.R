@@ -1,20 +1,28 @@
-# Create OmicNavigator study
+# Create OmicNavigator study from files in the directory results/
 
 library(ggplot2)
 library(OmicNavigator)
 
+# Create a new study -----------------------------------------------------------
+
 study <- createStudy("RNAseq123",
                      "Bioc workflow package converted to OmicNavigator",
                      version = "0.1.0")
+
+# Models -----------------------------------------------------------------------
 
 models <- list(
   main = "A standard group-means analysis of 3 mammary cell populations"
 )
 study <- addModels(study, models)
 
+# Samples ----------------------------------------------------------------------
+
 samples <- read.delim("results/samples.txt", stringsAsFactors = FALSE)
 samples <- list(main = samples)
 study <- addSamples(study, samples)
+
+# Features ---------------------------------------------------------------------
 
 features <- read.delim("results/features.txt", stringsAsFactors = FALSE)
 # The featureIDs in the first column must be a character vector
@@ -22,15 +30,22 @@ features$entrez <- as.character(features$entrez)
 features <- list(main = features)
 study <- addFeatures(study, features)
 
+# MetaFeatures -----------------------------------------------------------------
+
 metaFeatures <- read.delim("results/metaFeatures.txt", stringsAsFactors = FALSE,
                            colClasses = c(entrez = "character"))
 metaFeatures <- list(main = metaFeatures)
 study <- addMetaFeatures(study, metaFeatures)
 
+# Assays -----------------------------------------------------------------------
+
 assays <- read.delim("results/assays.txt", stringsAsFactors = FALSE)
 assays <- list(main = assays)
 study <- addAssays(study, assays)
 
+# Results (differential expression) --------------------------------------------
+
+# The featureID in the first column must be a character vector
 BasalvsLP <- read.delim("results/BasalvsLP.txt", stringsAsFactors = FALSE,
                         colClasses = c(entrez = "character"))
 BasalvsML <- read.delim("results/BasalvsML.txt", stringsAsFactors = FALSE,
@@ -46,6 +61,8 @@ results <- list(
 )
 study <- addResults(study, results)
 
+# Tests ------------------------------------------------------------------------
+
 tests <- list(
   main = list(
     BasalvsLP = "Which genes are DE between Basal and LP cells?",
@@ -54,6 +71,8 @@ tests <- list(
   )
 )
 study <- addTests(study, tests)
+
+# Linkouts to external resources for the results table -------------------------
 
 resultsLinkouts <- list(
   main = list(
@@ -64,6 +83,8 @@ resultsLinkouts <- list(
 )
 study <- addResultsLinkouts(study, resultsLinkouts)
 
+# Annotations (used for enrichments) -------------------------------------------
+
 load("data/mouse_H_v5p2.rdata")
 annotations <- list(
   mouse_H_v5p2 = list(
@@ -73,6 +94,8 @@ annotations <- list(
   )
 )
 study <- addAnnotations(study, annotations)
+
+# Enrichments ------------------------------------------------------------------
 
 enrichedBasalvsLP <- read.delim("results/enrichedBasalvsLP.txt",
                                 stringsAsFactors = FALSE)
@@ -101,10 +124,14 @@ enrichments <- list(
 )
 study <- addEnrichments(study, enrichments)
 
+# Linkouts to external resources for the enrichments table ---------------------
+
 enrichmentsLinkouts <- list(
   mouse_H_v5p2 = "https://www.gsea-msigdb.org/gsea/msigdb/cards/"
 )
 study <- addEnrichmentsLinkouts(study, enrichmentsLinkouts)
+
+# Barcodes (for barcode plot of features enriched in a given annotation) -------
 
 barcodes <- list(
   default = list(
@@ -118,10 +145,14 @@ barcodes <- list(
 )
 study <- addBarcodes(study, barcodes = barcodes)
 
+# Reports ----------------------------------------------------------------------
+
 reports <- list(
   main = "results/report.html"
 )
 study <- addReports(study, reports)
+
+# Custom plots -----------------------------------------------------------------
 
 x <- getPlottingData(study, modelID = "main", featureID = "497097")
 
@@ -152,6 +183,8 @@ plotStudy(study, modelID = "main", featureID = "497097",
           plotID = "expression_by_cell_type")
 plotStudy(study, modelID = "main", featureID = "27395",
           plotID = "expression_by_cell_type")
+
+# Install study package and start app ------------------------------------------
 
 installStudy(study)
 message("Starting app. Should open in new browser tab.")
