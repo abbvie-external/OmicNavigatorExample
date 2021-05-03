@@ -1,6 +1,7 @@
 # Create OmicNavigator study from files in the directory results/
 
 library(ggplot2)
+library(gplots)
 library(OmicNavigator)
 
 # Create a new study -----------------------------------------------------------
@@ -83,6 +84,74 @@ resultsLinkouts <- list(
 )
 study <- addResultsLinkouts(study, resultsLinkouts)
 
+# Custom plots -----------------------------------------------------------------
+
+x <- getPlottingData(study, modelID = "main", featureID = "497097")
+
+#single feature
+expression_by_cell_type <- function(x) {
+  ggDataFrame <- cbind(x$samples,
+                       feature = as.numeric(x$assays))
+  ggplot(ggDataFrame, aes(x = .data$group, y = .data$feature, fill = .data$group)) +
+    geom_boxplot() +
+    labs(x = "Cell type", y = "Gene expression",
+         title = sprintf("%s (Entrez %s)", x$features$symbol, x$features$entrez)) +
+    scale_fill_manual("Cell type", values = c("pink", "purple", "gold")) +
+    theme_classic(base_size = 24)
+}
+expression_by_cell_type(x)
+
+#multi-feature
+IntFeatures <- study$results$main$BasalvsLP[1:10,1]
+plottingData <- getPlottingData(study, modelID = "main", featureID = IntFeatures)
+
+heatmap.custom <- function(plottingData){
+  if (nrow(plottingData[["assays"]]) < 2) {
+    stop("This plotting function requires at least 2 features")
+  }
+  plotMatrix <- as.matrix(plottingData$assays)
+  colnames(plotMatrix) <- paste(plottingData$samples[['group']], plottingData$samples[['lane']], sep = "_")
+  row.names(plotMatrix) <- plottingData$features$symbol
+  heatmap.2(x = plotMatrix,
+            trace = "none",
+            key = T,
+            key.title = NA,
+            key.xlab = "Gene Expression",
+            key.ylab = NA,
+            col = heat.colors,
+            cexRow = 1.25,
+            cexCol = 1.25,
+            srtCol= 60,
+            margins = c(9,8)
+  )
+}
+
+heatmap.custom(plottingData)
+
+plots <- list(
+  main = list(
+    expression_by_cell_type = list(
+      displayName = "Expression by cell type",
+      plotType = "singleFeature",
+      packages = c("ggplot2")
+    ),
+    heatmap.custom = list(
+      displayName = "Expression Heatmap",
+      plotType = "multiFeature",
+      packages = "gplots"
+    )
+  )
+)
+study <- addPlots(study, plots = plots)
+
+plotStudy(study, modelID = "main", featureID = "497097",
+          plotID = "expression_by_cell_type")
+plotStudy(study, modelID = "main", featureID = "27395",
+          plotID = "expression_by_cell_type")
+plotStudy(study, modelID = "main", featureID = IntFeatures,
+          plotID = "heatmap.custom")
+
+
 # Annotations (used for enrichments) -------------------------------------------
 
 load("data/mouse_H_v5p2.rdata")
@@ -151,38 +220,6 @@ reports <- list(
   main = "results/report.html"
 )
 study <- addReports(study, reports)
-
-# Custom plots -----------------------------------------------------------------
-
-x <- getPlottingData(study, modelID = "main", featureID = "497097")
-
-expression_by_cell_type <- function(x) {
-  ggDataFrame <- cbind(x$samples,
-                       feature = as.numeric(x$assays))
-  ggplot(ggDataFrame, aes(x = .data$group, y = .data$feature, fill = .data$group)) +
-    geom_boxplot() +
-    labs(x = "Cell type", y = "Gene expression",
-         title = sprintf("%s (Entrez %s)", x$features$symbol, x$features$entrez)) +
-    scale_fill_manual("Cell type", values = c("pink", "purple", "gold")) +
-    theme_classic(base_size = 24)
-}
-expression_by_cell_type(x)
-
-plots <- list(
-  main = list(
-    expression_by_cell_type = list(
-      displayName = "Expression by cell type",
-      plotType = "singleFeature",
-      packages = c("ggplot2")
-    )
-  )
-)
-study <- addPlots(study, plots = plots)
-
-plotStudy(study, modelID = "main", featureID = "497097",
-          plotID = "expression_by_cell_type")
-plotStudy(study, modelID = "main", featureID = "27395",
-          plotID = "expression_by_cell_type")
 
 # Install study package and start app ------------------------------------------
 
