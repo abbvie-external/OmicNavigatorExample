@@ -20,7 +20,7 @@ analysis of the RNA-seq experiment in [`data/`](./data/). It uses limma+voom,
 but OmicNavigator is agnostic to how you perform your analysis. If you prefer,
 you could use Python or a GUI to perform the analysis, as long as you export the
 results. Also, the HTML produced by this Rmd is included as an external report
-in the final OmicNavigatory study package (note: including a report file is optional).
+in the final OmicNavigator study package (note: including a report file is optional).
 
 * [`results/`](./results/) - The analysis results exported by
 [`analyze.Rmd`](./analyze.Rmd)
