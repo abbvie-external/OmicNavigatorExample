@@ -2,6 +2,7 @@
 
 library(ggplot2)
 library(gplots)
+library(viridis)
 library(OmicNavigator)
 
 # Create a new study -----------------------------------------------------------
@@ -93,11 +94,11 @@ expression_by_cell_type <- function(x) {
   ggDataFrame <- cbind(x$samples,
                        feature = as.numeric(x$assays))
   ggplot(ggDataFrame, aes(x = .data$group, y = .data$feature, fill = .data$group)) +
-    geom_boxplot() +
+    geom_boxplot(alpha = .75) +
     labs(x = "Cell type", y = "Gene expression",
          title = sprintf("%s (Entrez %s)", x$features$symbol, x$features$entrez)) +
-    scale_fill_manual("Cell type", values = c("pink", "purple", "gold")) +
-    theme_classic(base_size = 24)
+    scale_fill_viridis(discrete = T, begin = .25) +
+    theme_classic(base_size = 20)
 }
 expression_by_cell_type(x)
 
@@ -118,7 +119,7 @@ heatmap.custom <- function(plottingData){
             key.title = NA,
             key.xlab = "Gene Expression",
             key.ylab = NA,
-            col = heat.colors,
+            col = viridis(75),
             cexRow = 1.25,
             cexCol = 1.25,
             srtCol= 60,
@@ -133,12 +134,12 @@ plots <- list(
     expression_by_cell_type = list(
       displayName = "Expression by cell type",
       plotType = "singleFeature",
-      packages = c("ggplot2")
+      packages = c("ggplot2", "viridis")
     ),
     heatmap.custom = list(
       displayName = "Expression Heatmap",
       plotType = "multiFeature",
-      packages = "gplots"
+      packages = c("gplots", "viridis")
     )
   )
 )
