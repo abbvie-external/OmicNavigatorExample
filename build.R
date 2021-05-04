@@ -13,14 +13,14 @@ study <- createStudy("RNAseq123",
 # Models -----------------------------------------------------------------------
 
 models <- list(
-  main = "A standard group-means analysis of 3 mammary cell populations"
+  Differential_Expression = "A standard group-means analysis of 3 mammary cell populations"
 )
 study <- addModels(study, models)
 
 # Samples ----------------------------------------------------------------------
 
 samples <- read.delim("results/samples.txt", stringsAsFactors = FALSE)
-samples <- list(main = samples)
+samples <- list(Differential_Expression = samples)
 study <- addSamples(study, samples)
 
 # Features ---------------------------------------------------------------------
@@ -28,20 +28,20 @@ study <- addSamples(study, samples)
 features <- read.delim("results/features.txt", stringsAsFactors = FALSE)
 # The featureIDs in the first column must be a character vector
 features$entrez <- as.character(features$entrez)
-features <- list(main = features)
+features <- list(Differential_Expression = features)
 study <- addFeatures(study, features)
 
 # MetaFeatures -----------------------------------------------------------------
 
 metaFeatures <- read.delim("results/metaFeatures.txt", stringsAsFactors = FALSE,
                            colClasses = c(entrez = "character"))
-metaFeatures <- list(main = metaFeatures)
+metaFeatures <- list(Differential_Expression = metaFeatures)
 study <- addMetaFeatures(study, metaFeatures)
 
 # Assays -----------------------------------------------------------------------
 
 assays <- read.delim("results/assays.txt", stringsAsFactors = FALSE)
-assays <- list(main = assays)
+assays <- list(Differential_Expression = assays)
 study <- addAssays(study, assays)
 
 # Results (differential expression) --------------------------------------------
@@ -54,7 +54,7 @@ BasalvsML <- read.delim("results/BasalvsML.txt", stringsAsFactors = FALSE,
 LPvsML <- read.delim("results/LPvsML.txt", stringsAsFactors = FALSE,
                      colClasses = c(entrez = "character"))
 results <- list(
-  main = list(
+  Differential_Expression = list(
     BasalvsLP = LPvsML,
     BasalvsML = BasalvsML,
     LPvsML = LPvsML
@@ -65,7 +65,7 @@ study <- addResults(study, results)
 # Tests ------------------------------------------------------------------------
 
 tests <- list(
-  main = list(
+  Differential_Expression = list(
     BasalvsLP = "Which genes are DE between Basal and LP cells?",
     BasalvsML = "Which genes are DE between Basal and ML cells?",
     LPvsML = "Which genes are DE between LP and ML cells?"
@@ -76,7 +76,7 @@ study <- addTests(study, tests)
 # Linkouts to external resources for the results table -------------------------
 
 resultsLinkouts <- list(
-  main = list(
+  Differential_Expression = list(
     entrez = c("https://www.ncbi.nlm.nih.gov/gene/",
                "https://ensembl.org/Mus_musculus/Gene/Summary?g="),
     symbol = "http://www.informatics.jax.org/searchtool/Search.do?query="
@@ -86,7 +86,7 @@ study <- addResultsLinkouts(study, resultsLinkouts)
 
 # Custom plots -----------------------------------------------------------------
 
-x <- getPlottingData(study, modelID = "main", featureID = "497097")
+x <- getPlottingData(study, modelID = "Differential_Expression", featureID = "497097")
 
 #single feature
 expression_by_cell_type <- function(x) {
@@ -102,8 +102,8 @@ expression_by_cell_type <- function(x) {
 expression_by_cell_type(x)
 
 #multi-feature
-IntFeatures <- study$results$main$BasalvsLP[1:10,1]
-plottingData <- getPlottingData(study, modelID = "main", featureID = IntFeatures)
+IntFeatures <- study$results$Differential_Expression$BasalvsLP[1:10,1]
+plottingData <- getPlottingData(study, modelID = "Differential_Expression", featureID = IntFeatures)
 
 heatmap.custom <- function(plottingData){
   if (nrow(plottingData[["assays"]]) < 2) {
@@ -129,7 +129,7 @@ heatmap.custom <- function(plottingData){
 heatmap.custom(plottingData)
 
 plots <- list(
-  main = list(
+  Differential_Expression = list(
     expression_by_cell_type = list(
       displayName = "Expression by cell type",
       plotType = "singleFeature",
@@ -144,11 +144,11 @@ plots <- list(
 )
 study <- addPlots(study, plots = plots)
 
-plotStudy(study, modelID = "main", featureID = "497097",
+plotStudy(study, modelID = "Differential_Expression", featureID = "497097",
           plotID = "expression_by_cell_type")
-plotStudy(study, modelID = "main", featureID = "27395",
+plotStudy(study, modelID = "Differential_Expression", featureID = "27395",
           plotID = "expression_by_cell_type")
-plotStudy(study, modelID = "main", featureID = IntFeatures,
+plotStudy(study, modelID = "Differential_Expression", featureID = IntFeatures,
           plotID = "heatmap.custom")
 
 
@@ -183,7 +183,7 @@ create_enrichments <- function(x) {
   )
 }
 enrichments <- list(
-  main = list(
+  Differential_Expression = list(
     mouse_H_v5p2 = list(
       BasalvsLP = create_enrichments(enrichedBasalvsLP),
       BasalvsML = create_enrichments(enrichedBasalvsML),
@@ -217,7 +217,7 @@ study <- addBarcodes(study, barcodes = barcodes)
 # Reports ----------------------------------------------------------------------
 
 reports <- list(
-  main = "results/report.html"
+  Differential_Expression = "results/report.html"
 )
 study <- addReports(study, reports)
 
