@@ -9,8 +9,7 @@ output:
 
 This example limma+voom code was adapted from the Bioconductor workflow
 [RNAseq123](https://bioconductor.org/packages/release/workflows/html/RNAseq123.html)
-to demonstrate how to use OmicNavigator. Please see the section
-[Citations](#citations) for more details.
+to demonstrate how to use [OmicNavigator](https://github.com/abbvie-external/OmicNavigator). More information about this code and the data required to execute it can be found at [OmicNavigatorExample](https://github.com/abbvie-external/OmicNavigatorExample). 
 
 Below is the description of the experiment from the [RNAseq123
 vignette][vignette]:
@@ -30,6 +29,8 @@ vignette][vignette]:
 > (specifically the align function (Liao, Smyth, and Shi 2013) followed by
 > featureCounts (Liao, Smyth, and Shi 2014) for gene-level summarisation based on
 > the in-built mm10 RefSeq-based annotation).
+
+The results of this analysis were subsequently converted into an OmicNavigator study with [build.R](https://github.com/abbvie-external/OmicNavigatorExample/blob/main/build.R). 
 
 ## Prepare data
 
