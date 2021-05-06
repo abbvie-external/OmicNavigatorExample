@@ -39,7 +39,7 @@ already available in `results/`, so if you want you can skip running
 1. Install R package dependencies
 
     ```
-    source("setup.R")
+    source("setup.R", local = new.env())
     ```
 
 1. Perform the differential expression analysis. This reads the input files in
@@ -47,7 +47,7 @@ already available in `results/`, so if you want you can skip running
 
     ```
     library(rmarkdown)
-    render("analyze.Rmd", output_file = "results/report.html")
+    render("analyze.Rmd", output_file = "results/report.html", envir = new.env())
     ```
 
 1. Create and install the OmicNavigator study package. This reads the analysis
