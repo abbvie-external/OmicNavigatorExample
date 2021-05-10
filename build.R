@@ -56,7 +56,7 @@ LPvsML <- read.delim("results/LPvsML.txt", stringsAsFactors = FALSE,
                      colClasses = c(entrez = "character"))
 results <- list(
   Differential_Expression = list(
-    BasalvsLP = LPvsML,
+    BasalvsLP = BasalvsLP,
     BasalvsML = BasalvsML,
     LPvsML = LPvsML
   )
