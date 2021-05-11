@@ -1,0 +1,6 @@
+# linguist overrides
+# https://github.com/github/linguist/blob/master/docs/overrides.md
+# Ignore generated HTML report file
+results/report.html linguist-generated=true
+# Classify Rmd as R
+*.Rmd linguist-language=R
