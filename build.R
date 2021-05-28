@@ -9,7 +9,7 @@ library(OmicNavigator)
 
 study <- createStudy("RNAseq123",
                      "Bioc workflow package converted to OmicNavigator",
-                     version = "0.1.0")
+                     version = "0.1.1")
 
 # Models -----------------------------------------------------------------------
 
@@ -97,8 +97,8 @@ expression_by_cell_type <- function(x) {
     geom_boxplot(alpha = .75) +
     labs(x = "Cell type", y = "Gene expression",
          title = sprintf("%s (Entrez %s)", x$features$symbol, x$features$entrez)) +
-    scale_fill_viridis(discrete = T, begin = .25) +
-    theme_classic(base_size = 20)
+    scale_fill_viridis(discrete = TRUE, begin = .25) +
+    theme_classic()
 }
 expression_by_cell_type(x)
 
@@ -115,7 +115,7 @@ heatmap.custom <- function(plottingData){
   row.names(plotMatrix) <- plottingData$features$symbol
   heatmap.2(x = plotMatrix,
             trace = "none",
-            key = T,
+            key = TRUE,
             key.title = NA,
             key.xlab = "Gene Expression",
             key.ylab = NA,
