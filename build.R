@@ -9,7 +9,7 @@ library(OmicNavigator)
 
 study <- createStudy("RNAseq123",
                      "Bioc workflow package converted to OmicNavigator",
-                     version = "0.1.1")
+                     version = "0.2.0")
 
 # Models -----------------------------------------------------------------------
 
@@ -87,16 +87,23 @@ study <- addResultsLinkouts(study, resultsLinkouts)
 
 # Custom plots -----------------------------------------------------------------
 
-x <- getPlottingData(study, modelID = "Differential_Expression", featureID = "497097")
+x <- getPlottingData(
+  study,
+  modelID = "Differential_Expression",
+  featureID = "497097",
+  testID = "BasalvsLP"
+)
 
 #single feature
 expression_by_cell_type <- function(x) {
   ggDataFrame <- cbind(x$samples,
                        feature = as.numeric(x$assays))
+  pval <- x[["results"]][["P.Value"]]
   ggplot(ggDataFrame, aes(x = .data$group, y = .data$feature, fill = .data$group)) +
     geom_boxplot(alpha = .75) +
     labs(x = "Cell type", y = "Gene expression",
-         title = sprintf("%s (Entrez %s)", x$features$symbol, x$features$entrez)) +
+         title = sprintf("%s (Entrez %s)", x$features$symbol, x$features$entrez),
+         subtitle = sprintf("p-value: %.2e", pval)) +
     scale_fill_viridis(discrete = TRUE, begin = .25) +
     theme_classic()
 }
