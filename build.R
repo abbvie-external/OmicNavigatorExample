@@ -9,7 +9,7 @@ library(OmicNavigator)
 
 study <- createStudy("RNAseq123",
                      "Bioc workflow package converted to OmicNavigator",
-                     version = "0.2.0")
+                     version = "0.3.0")
 
 # Models -----------------------------------------------------------------------
 
@@ -136,6 +136,30 @@ heatmap.custom <- function(plottingData){
 
 heatmap.custom(plottingData)
 
+# multiTest (singleFeature)
+dataMultiTest <- getPlottingData(
+  study,
+  modelID = "Differential_Expression",
+  featureID = "497097",
+  testID = names(getTests(study, modelID = "Differential_Expression"))
+)
+
+plotTstats <- function(x){
+  if (length(x$results) < 2) {
+    stop("This plotting function requires results from at least 2 testIDs")
+  }
+
+  tstats <- vapply(x$results, function(z) z$t, numeric(1))
+
+  dotchart(
+    x = tstats,
+    xlab = "t-statistic",
+    ylab = "testID",
+    main = sprintf("%s (Entrez %s)", x$features$symbol, x$features$entrez)
+  )
+}
+plotTstats(dataMultiTest)
+
 plots <- list(
   Differential_Expression = list(
     expression_by_cell_type = list(
@@ -147,6 +171,10 @@ plots <- list(
       displayName = "Expression Heatmap",
       plotType = "multiFeature",
       packages = c("gplots", "viridis")
+    ),
+    plotTstats = list(
+      displayName = "t-statistics",
+      plotType = "multiTest"
     )
   )
 )
@@ -158,7 +186,9 @@ plotStudy(study, modelID = "Differential_Expression", featureID = "27395",
           plotID = "expression_by_cell_type")
 plotStudy(study, modelID = "Differential_Expression", featureID = IntFeatures,
           plotID = "heatmap.custom")
-
+plotStudy(study, modelID = "Differential_Expression", featureID = "27395",
+          plotID = "plotTstats",
+          testID = names(getTests(study, modelID = "Differential_Expression")))
 
 # Annotations (used for enrichments) -------------------------------------------
 
