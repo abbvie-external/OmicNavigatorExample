@@ -262,5 +262,7 @@ study <- addReports(study, reports)
 # Install study package and start app ------------------------------------------
 
 installStudy(study)
-message("Starting app. Should open in new browser tab.")
-if (interactive()) startApp()
+if (interactive()) {
+  message("Starting app. Should open in new browser tab.")
+  startApp()
+}
