@@ -263,4 +263,4 @@ study <- addReports(study, reports)
 
 installStudy(study)
 message("Starting app. Should open in new browser tab.")
-startApp()
+if (interactive()) startApp()
