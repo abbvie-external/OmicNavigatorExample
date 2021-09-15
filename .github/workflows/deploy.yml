@@ -1,0 +1,23 @@
+# Deploy by sending dispatch signal to internal CD repo
+name: Deploy
+on:
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: abbvie-internal/OmicNavigatorCD
+          event-type: deploy-example-package
+          # https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#github-context
+          client-payload: '{
+            "repository": "${{ github.repository }}",
+            "ref": "${{ github.ref }}",
+            "sha": "${{ github.sha }}",
+            "workflow": "${{ github.workflow }}",
+            "run_id": "${{ github.run_id }}",
+            "run_number": "${{ github.run_number }}"
+          }'
