@@ -9,7 +9,7 @@ library(OmicNavigator)
 
 study <- createStudy("RNAseq123",
                      "Bioc workflow package converted to OmicNavigator",
-                     version = "0.3.0")
+                     version = "0.4.0")
 
 # Models -----------------------------------------------------------------------
 
@@ -160,6 +160,37 @@ plotTstats <- function(x){
 }
 plotTstats(dataMultiTest)
 
+# multiTest (multiFeature)
+dataMultiTestMultiFeature <- getPlottingData(
+  study,
+  modelID = "Differential_Expression",
+  featureID = IntFeatures,
+  testID = names(getTests(study, modelID = "Differential_Expression"))
+)
+
+heatmapTstats <- function(x){
+  if (length(x$results) < 2) {
+    stop("This plotting function requires results from at least 2 testIDs")
+  }
+
+  tstats <- vapply(x$results, function(z) z$t, numeric(nrow(x$features)))
+  rownames(tstats) <- x$features[[1]]
+
+  heatmap.2(x = tstats,
+            trace = "none",
+            key = TRUE,
+            key.title = NA,
+            key.xlab = "t-statistics",
+            key.ylab = NA,
+            col = viridis(75),
+            cexRow = 1,
+            cexCol = 1.25,
+            srtCol= 60,
+            margins = c(9,8)
+  )
+}
+heatmapTstats(dataMultiTestMultiFeature)
+
 plots <- list(
   Differential_Expression = list(
     expression_by_cell_type = list(
@@ -175,6 +206,11 @@ plots <- list(
     plotTstats = list(
       displayName = "t-statistics",
       plotType = "multiTest"
+    ),
+    heatmapTstats = list(
+      displayName = "t-statistics",
+      plotType = c("multiFeature", "multiTest"),
+      packages = c("gplots", "viridis")
     )
   )
 )
@@ -188,6 +224,9 @@ plotStudy(study, modelID = "Differential_Expression", featureID = IntFeatures,
           plotID = "heatmap.custom")
 plotStudy(study, modelID = "Differential_Expression", featureID = "27395",
           plotID = "plotTstats",
+          testID = names(getTests(study, modelID = "Differential_Expression")))
+plotStudy(study, modelID = "Differential_Expression", featureID = IntFeatures,
+          plotID = "heatmapTstats",
           testID = names(getTests(study, modelID = "Differential_Expression")))
 
 # Annotations (used for enrichments) -------------------------------------------
