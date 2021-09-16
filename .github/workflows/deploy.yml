@@ -4,6 +4,7 @@ on:
   workflow_dispatch:
 jobs:
   deploy:
+    if: ${{ github.repository == 'abbvie-external/OmicNavigatorExample' && github.event_name != 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
       - name: Repository dispatch
