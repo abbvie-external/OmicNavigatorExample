@@ -1,6 +1,11 @@
 # Deploy by sending dispatch signal to internal CD repo
 name: Deploy
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'build.R'
   workflow_dispatch:
 jobs:
   deploy:
