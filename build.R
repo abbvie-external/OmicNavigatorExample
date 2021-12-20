@@ -4,6 +4,7 @@ library(ggplot2)
 library(gplots)
 library(viridis)
 library(OmicNavigator)
+library(plotly)
 
 # Create a new study -----------------------------------------------------------
 
@@ -191,6 +192,37 @@ heatmapTstats <- function(x){
 }
 heatmapTstats(dataMultiTestMultiFeature)
 
+# Interactive plotly plot (Single Feature)
+single_feature_plotly <- function(x) {
+  ggDataFrame <- cbind(x$samples,
+                       feature = as.numeric(x$assays))
+  pval <- x[["results"]][["P.Value"]]
+  p <- ggplot(ggDataFrame, aes(x = .data$group, y = .data$feature, fill = .data$group)) +
+    geom_boxplot(alpha = .75) +
+    labs(x = "Cell type", y = "Gene expression",
+         title = sprintf("%s (Entrez %s)", x$features$symbol, x$features$entrez),
+         subtitle = sprintf("p-value: %.2e", pval)) +
+    scale_fill_viridis(discrete = TRUE, begin = .25) +
+    theme_classic()
+
+  plotly::ggplotly(p)
+}
+single_feature_plotly(x)
+
+# Interactive plotly plot (Multi Feature)
+
+heatmap.plotly <- function(plottingData){
+  if (nrow(plottingData[["assays"]]) < 2) {
+    stop("This plotting function requires at least 2 features")
+  }
+  plotMatrix <- as.matrix(plottingData$assays)
+  colnames(plotMatrix) <- paste(plottingData$samples[['group']], plottingData$samples[['lane']], sep = "_")
+  row.names(plotMatrix) <- plottingData$features$symbol
+  plot_ly(x = colnames(plotMatrix), y = rownames(plotMatrix), z = plotMatrix, type = "heatmap",
+          colors = viridis(75))
+}
+heatmap.plotly(plottingData)
+
 plots <- list(
   Differential_Expression = list(
     expression_by_cell_type = list(
@@ -211,6 +243,16 @@ plots <- list(
       displayName = "t-statistics",
       plotType = c("multiFeature", "multiTest"),
       packages = c("gplots", "viridis")
+    ),
+    single_feature_plotly = list(
+      displayName = "Expression by cell type interactive with plotly",
+      plotType = "singleFeature",
+      packages = c("ggplot2", "viridis", "plotly")
+    ),
+    heatmap.plotly = list(
+      displayName = "Expression Heatmap interactive with plotly",
+      plotType = "multiFeature",
+      packages = c("viridis", "plotly")
     )
   )
 )
