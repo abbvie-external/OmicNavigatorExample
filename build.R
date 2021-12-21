@@ -246,12 +246,12 @@ plots <- list(
     ),
     single_feature_plotly = list(
       displayName = "Expression by cell type interactive with plotly",
-      plotType = "singleFeature",
+      plotType = c("singleFeature", "plotly"),
       packages = c("ggplot2", "viridis", "plotly")
     ),
     heatmap.plotly = list(
       displayName = "Expression Heatmap interactive with plotly",
-      plotType = "multiFeature",
+      plotType = c("multiFeature", "plotly"),
       packages = c("viridis", "plotly")
     )
   )
@@ -270,6 +270,10 @@ plotStudy(study, modelID = "Differential_Expression", featureID = "27395",
 plotStudy(study, modelID = "Differential_Expression", featureID = IntFeatures,
           plotID = "heatmapTstats",
           testID = names(getTests(study, modelID = "Differential_Expression")))
+jsonBoxplot <- plotStudy(study, modelID = "Differential_Expression", featureID = "497097",
+          plotID = "single_feature_plotly")
+jsonHeatmap <- plotStudy(study, modelID = "Differential_Expression", featureID = IntFeatures,
+          plotID = "heatmap.plotly")
 
 # Annotations (used for enrichments) -------------------------------------------
 
