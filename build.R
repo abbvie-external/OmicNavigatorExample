@@ -5,6 +5,7 @@ library(gplots)
 library(viridis)
 library(OmicNavigator)
 library(plotly)
+library(heatmaply)
 
 # Create a new study -----------------------------------------------------------
 
@@ -223,6 +224,28 @@ heatmap.plotly <- function(plottingData){
 }
 heatmap.plotly(plottingData)
 
+# Interactive heatmaply plot (Multi Feature)
+heatmap.heatmaply <- function(plottingData){
+  if (nrow(plottingData[["assays"]]) < 2) {
+    stop("This plotting function requires at least 2 features")
+  }
+  plotMatrix <- round(plottingData$assays, 2)
+  row.names(plotMatrix) <- plottingData$features$symbol
+  heatmaply(
+    x = plotMatrix,
+    seriate = "OLO",
+    label_names = c("Gene", "Sample", "log<sub>2</sub>(CPM)"),
+    key.title = "Gene Expression
+    (log<sub>2</sub>CPM)",
+    col_side_colors = plottingData$samples[, c("group", "lane")],
+    row_side_colors = plottingData$features[, c("chrom"), drop = F], #if you keep it a data.frame heatmaply will retain label
+    plot_method = "ggplot"
+    )
+}
+heatmap.heatmaply(plottingData)
+
+
+
 plots <- list(
   Differential_Expression = list(
     expression_by_cell_type = list(
@@ -253,6 +276,11 @@ plots <- list(
       displayName = "Expression Heatmap interactive with plotly",
       plotType = c("multiFeature", "plotly"),
       packages = c("viridis", "plotly")
+    ),
+    heatmap.heatmaply = list(
+      displayName = "Expression Heatmap interactive with heatmaply",
+      plotType = c("multiFeature", "plotly"),
+      packages = c("viridis", "heatmaply")
     )
   )
 )
@@ -274,6 +302,8 @@ jsonBoxplot <- plotStudy(study, modelID = "Differential_Expression", featureID =
           plotID = "single_feature_plotly")
 jsonHeatmap <- plotStudy(study, modelID = "Differential_Expression", featureID = IntFeatures,
           plotID = "heatmap.plotly")
+jsonHeatmaply <- plotStudy(study, modelID = "Differential_Expression", featureID = IntFeatures,
+                         plotID = "heatmap.heatmaply")
 
 # Annotations (used for enrichments) -------------------------------------------
 
