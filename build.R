@@ -230,7 +230,7 @@ heatmap.heatmaply <- function(plottingData){
     stop("This plotting function requires at least 2 features")
   }
   plotMatrix <- round(plottingData$assays, 2)
-  row.names(plotMatrix) <- plottingData$features$symbol
+  row.names(plotMatrix) <- ifelse(duplicated(plottingData$features$symbol), plottingData$features$entrez, plottingData$features$symbol) #avoid duplicated gene names or NAs
   heatmaply(
     x = plotMatrix,
     seriate = "OLO",
