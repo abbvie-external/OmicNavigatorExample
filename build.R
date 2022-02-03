@@ -11,7 +11,7 @@ library(heatmaply)
 
 study <- createStudy("RNAseq123",
                      "Bioc workflow package converted to OmicNavigator",
-                     version = "0.5.0")
+                     version = "0.6.0")
 
 # Models -----------------------------------------------------------------------
 
