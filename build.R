@@ -11,7 +11,7 @@ library(heatmaply)
 
 study <- createStudy("RNAseq123",
                      "Bioc workflow package converted to OmicNavigator",
-                     version = "0.6.0")
+                     version = "0.6.1")
 
 # Models -----------------------------------------------------------------------
 
@@ -230,7 +230,9 @@ heatmap.heatmaply <- function(plottingData){
     stop("This plotting function requires at least 2 features")
   }
   plotMatrix <- round(plottingData$assays, 2)
-  row.names(plotMatrix) <- ifelse(duplicated(plottingData$features$symbol), plottingData$features$entrez, plottingData$features$symbol) #avoid duplicated gene names or NAs
+  row.names(plotMatrix) <- ifelse(duplicated(plottingData$features$symbol) | is.na(plottingData$features$symbol),
+                                  plottingData$features$entrez,
+                                  plottingData$features$symbol) #avoid duplicated gene names or NAs
   heatmaply(
     x = plotMatrix,
     seriate = "OLO",
