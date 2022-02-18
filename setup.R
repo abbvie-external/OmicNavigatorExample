@@ -1,6 +1,6 @@
 # Installs the required packages from CRAN, Bioconductor, and GitHub.
 
-cran <- c("BiocManager", "ggplot2", "gplots", "heatmaply", "remotes", "rmarkdown", "viridis", "plotly")
+cran <- c("BiocManager", "ggplot2", "gplots", "heatmaply", "iheatmapr", "remotes", "rmarkdown", "viridis", "plotly")
 for (pkg in cran) {
   if (!requireNamespace(pkg, quietly = TRUE)) {
     install.packages(pkg)
