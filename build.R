@@ -218,7 +218,7 @@ iheatmapr.custom <- function(dataMultiTestMultiFeature) {
 
   # iheatmapr
   p <- main_heatmap(plotMatrix,
-                    name = "RNAseq123",
+                    name = "Assay",
                     colors = "Blues") %>%
     add_col_clustering(method = "groups",
                        groups = cells_array,
@@ -337,7 +337,7 @@ plots <- list(
     ),
     iheatmapr.custom = list(
       displayName = "Expression Heatmap interactive with iheatmapr",
-      plotType = c("multiFeature", "multiTest"),
+      plotType = c("multiFeature", "multiTest", "plotly"),
       packages = c("plotly", "iheatmapr")
     )
   )
