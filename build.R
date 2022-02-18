@@ -241,8 +241,7 @@ iheatmapr.custom <- function(dataMultiTestMultiFeature) {
     modify_layout(list(margin = list(b = 100))) %>%
     add_row_clustering() %>%
     add_row_title("Features")
-  # to_plotly_json(p)
-  p
+  plotly::plotly_build(iheatmapr::to_plotly_list(p))
 }
 iheatmapr.custom(dataMultiTestMultiFeature)
 
@@ -339,7 +338,7 @@ plots <- list(
     iheatmapr.custom = list(
       displayName = "Expression Heatmap interactive with iheatmapr",
       plotType = c("multiFeature", "multiTest"),
-      packages = c("iheatmapr")
+      packages = c("plotly", "iheatmapr")
     )
   )
 )
@@ -363,7 +362,9 @@ jsonHeatmap <- plotStudy(study, modelID = "Differential_Expression", featureID =
           plotID = "heatmap.plotly")
 jsonHeatmaply <- plotStudy(study, modelID = "Differential_Expression", featureID = IntFeatures,
                          plotID = "heatmap.heatmaply")
-
+jsonHeatmapr <- plotStudy(study, modelID = "Differential_Expression", featureID = IntFeatures,
+                          testID = names(getTests(study, modelID = "Differential_Expression")),
+                          plotID = "iheatmapr.custom")
 
 # Annotations (used for enrichments) -------------------------------------------
 
