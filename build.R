@@ -6,6 +6,7 @@ library(viridis)
 library(OmicNavigator)
 library(plotly)
 library(heatmaply)
+library(iheatmapr)
 
 # Create a new study -----------------------------------------------------------
 
@@ -135,7 +136,6 @@ heatmap.custom <- function(plottingData){
             margins = c(9,8)
   )
 }
-
 heatmap.custom(plottingData)
 
 # multiTest (singleFeature)
@@ -193,6 +193,58 @@ heatmapTstats <- function(x){
 }
 heatmapTstats(dataMultiTestMultiFeature)
 
+# multiTest (multiFeature) with iheatmapr
+iheatmapr.custom <- function(dataMultiTestMultiFeature) {
+  if (nrow(dataMultiTestMultiFeature[["assays"]]) < 2) {
+    stop("This plotting function requires at least 2 features")
+  }
+  plotMatrix <- as.matrix(dataMultiTestMultiFeature$assays)
+  colnames(plotMatrix) <- paste(dataMultiTestMultiFeature$samples[['group']], dataMultiTestMultiFeature$samples[['lane']], sep = "_")
+  row.names(plotMatrix) <- dataMultiTestMultiFeature$features$symbol
+  # assays
+  cells       <- dataMultiTestMultiFeature$samples
+  cells_array <- cells[order(cells$group), "group"]
+  plotMatrix  <- plotMatrix[,order(cells$group)]
+
+  # results
+  results.ls <- list()
+  res.ind    <- 1
+  for (ii in seq_along(names(dataMultiTestMultiFeature$results))) {
+    results_boolean <- dataMultiTestMultiFeature$results[[ii]]$P.Val < 0.05
+    results.ls[[res.ind]] <- ifelse(results_boolean, dataMultiTestMultiFeature$results[[ii]]$P.Val, NA)
+    res.ind <- res.ind + 1
+  }
+  names(results.ls) <- names(dataMultiTestMultiFeature$results)
+
+  # iheatmapr
+  p <- main_heatmap(plotMatrix,
+                    name = "Assay",
+                    colors = "Blues") %>%
+    add_col_clustering(method = "groups",
+                       groups = cells_array,
+                       name = "Group",
+                       colors = "Set1") %>%
+    add_row_annotation(data.frame("BasalvsLP" = results.ls[[1]]),
+                       side = 'right',
+                       size = 0.03,
+                       colors = list("BasalvsLP" = c("#FF7F00", "white"))) %>%
+    add_row_annotation(data.frame("BasalvsML" = results.ls[[2]]),
+                       side = 'right',
+                       size = 0.03,
+                       colors = list("BasalvsML" = c("purple", "white"))) %>%
+    add_row_annotation(data.frame("LPvsML" = results.ls[[3]]),
+                       side = 'right',
+                       size = 0.03,
+                       # show_colorbar = FALSE,
+                       colors = list("LPvsML" = c("darkblue", "white"))) %>%
+    add_col_labels() %>%
+    modify_layout(list(margin = list(b = 100))) %>%
+    add_row_clustering() %>%
+    add_row_title("Features")
+  plotly::plotly_build(iheatmapr::to_plotly_list(p))
+}
+iheatmapr.custom(dataMultiTestMultiFeature)
+
 # Interactive plotly plot (Single Feature)
 single_feature_plotly <- function(x) {
   ggDataFrame <- cbind(x$samples,
@@ -247,7 +299,6 @@ heatmap.heatmaply <- function(plottingData){
 heatmap.heatmaply(plottingData)
 
 
-
 plots <- list(
   Differential_Expression = list(
     expression_by_cell_type = list(
@@ -283,6 +334,11 @@ plots <- list(
       displayName = "Expression Heatmap interactive with heatmaply",
       plotType = c("multiFeature", "plotly"),
       packages = c("viridis", "heatmaply")
+    ),
+    iheatmapr.custom = list(
+      displayName = "Expression Heatmap interactive with iheatmapr",
+      plotType = c("multiFeature", "multiTest", "plotly"),
+      packages = c("plotly", "iheatmapr")
     )
   )
 )
@@ -306,6 +362,9 @@ jsonHeatmap <- plotStudy(study, modelID = "Differential_Expression", featureID =
           plotID = "heatmap.plotly")
 jsonHeatmaply <- plotStudy(study, modelID = "Differential_Expression", featureID = IntFeatures,
                          plotID = "heatmap.heatmaply")
+jsonHeatmapr <- plotStudy(study, modelID = "Differential_Expression", featureID = IntFeatures,
+                          testID = names(getTests(study, modelID = "Differential_Expression")),
+                          plotID = "iheatmapr.custom")
 
 # Annotations (used for enrichments) -------------------------------------------
 
