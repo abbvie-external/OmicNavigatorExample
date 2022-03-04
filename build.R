@@ -194,6 +194,14 @@ heatmapTstats <- function(x){
 heatmapTstats(dataMultiTestMultiFeature)
 
 # multiTest (multiFeature) with iheatmapr
+
+dataMultiTestMultiFeature <- getPlottingData(
+  study,
+  modelID = "Differential_Expression",
+  featureID = IntFeatures,
+  testID = names(getTests(study, modelID = "Differential_Expression"))
+)
+
 iheatmapr.custom <- function(dataMultiTestMultiFeature) {
   if (nrow(dataMultiTestMultiFeature[["assays"]]) < 2) {
     stop("This plotting function requires at least 2 features")
@@ -210,8 +218,8 @@ iheatmapr.custom <- function(dataMultiTestMultiFeature) {
   results.ls <- list()
   res.ind    <- 1
   for (ii in seq_along(names(dataMultiTestMultiFeature$results))) {
-    results_boolean <- dataMultiTestMultiFeature$results[[ii]]$P.Val < 0.05
-    results.ls[[res.ind]] <- ifelse(results_boolean, dataMultiTestMultiFeature$results[[ii]]$P.Val, NA)
+    results_boolean <- dataMultiTestMultiFeature$results[[ii]]$P.Val >= 0.05
+    results.ls[[res.ind]] <- ifelse(results_boolean, "p>=0.05", "p<0.05")
     res.ind <- res.ind + 1
   }
   names(results.ls) <- names(dataMultiTestMultiFeature$results)
@@ -224,19 +232,19 @@ iheatmapr.custom <- function(dataMultiTestMultiFeature) {
                        groups = cells_array,
                        name = "Group",
                        colors = "Set1") %>%
-    add_row_annotation(data.frame("BasalvsLP" = results.ls[[1]]),
+    add_row_annotation(data.frame("BasalvsLP" = results.ls[[1]],
+                                  "BasalvsML" = results.ls[[2]],
+                                  "LPvsML" = results.ls[[3]]),
                        side = 'right',
                        size = 0.03,
-                       colors = list("BasalvsLP" = c("#FF7F00", "white"))) %>%
-    add_row_annotation(data.frame("BasalvsML" = results.ls[[2]]),
-                       side = 'right',
-                       size = 0.03,
-                       colors = list("BasalvsML" = c("purple", "white"))) %>%
-    add_row_annotation(data.frame("LPvsML" = results.ls[[3]]),
-                       side = 'right',
-                       size = 0.03,
-                       # show_colorbar = FALSE,
-                       colors = list("LPvsML" = c("darkblue", "white"))) %>%
+                       colors = list("BasalvsLP" = c("#FF7F00", "white"),
+                                     "BasalvsML" = c("purple", "white"),
+                                     "LPvsML" = c("darkblue", "white"))) %>%
+    add_row_summary(groups = TRUE,
+                    type = "bar",
+                    layout = list(title = "Average<br>per<br>group",
+                                  font = list(size = 8)))
+  p <- p %>%
     add_col_labels() %>%
     modify_layout(list(margin = list(b = 100))) %>%
     add_row_clustering() %>%
