@@ -346,40 +346,48 @@ plots <- list(
   Differential_Expression = list(
     expression_by_cell_type = list(
       displayName = "Expression by cell type",
+      description = "boxplot of gene expression by cell type",
       plotType = "singleFeature",
       packages = c("ggplot2", "viridis")
     ),
     heatmap.custom = list(
       displayName = "Expression Heatmap",
+      description = "heatmap of gene expression using gplots package",
       plotType = "multiFeature",
       packages = c("gplots", "viridis")
     ),
     plotTstats = list(
       displayName = "t-statistics",
+      description = "plot of t-stats for each comparison",
       plotType = "multiTest"
     ),
     heatmapTstats = list(
       displayName = "t-statistics",
+      description = "heatmap of t-stats for each comparison using gplots package",
       plotType = c("multiFeature", "multiTest"),
       packages = c("gplots", "viridis")
     ),
     single_feature_plotly = list(
       displayName = "Expression by cell type interactive with plotly",
+      description = "interactive plotly boxplot of gene expression by cell type",
       plotType = c("singleFeature", "plotly"),
       packages = c("ggplot2", "viridis", "plotly")
     ),
     heatmap.plotly = list(
       displayName = "Expression Heatmap interactive with plotly",
+      description = "interactive heatmap of gene expression created with the plotly package. Click on a row to highlight a gene and box select to zoom.",
       plotType = c("multiFeature", "plotly"),
       packages = c("viridis", "plotly")
     ),
     heatmap.heatmaply = list(
       displayName = "Expression Heatmap interactive with heatmaply",
+      description = "interactive heatmap of gene expression created with the heatmaply package. Click on a row to highlight a gene and box select to zoom.",
       plotType = c("multiFeature", "plotly"),
       packages = c("viridis", "heatmaply")
     ),
     iheatmapr.custom = list(
       displayName = "Expression Heatmap interactive with iheatmapr",
+      description = "interactive heatmap of gene expression created with iheatmapr. Click on a row to highlight a gene and box select to zoom. Vertical colorbars to the right of the heatmap indicate DE calls at p < 0.5. The average expression per group is displayed as a colored bargraph furthest to the right.",
       plotType = c("multiFeature", "multiTest", "plotly"),
       packages = c("plotly", "iheatmapr")
     )
