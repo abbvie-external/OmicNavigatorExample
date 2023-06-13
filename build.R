@@ -68,13 +68,48 @@ study <- addResults(study, results)
 
 # Tests ------------------------------------------------------------------------
 
+# here we can add a description of each test, along with columns (displayed as tt)
 tests <- list(
   Differential_Expression = list(
-    BasalvsLP = "Which genes are DE between Basal and LP cells?",
-    BasalvsML = "Which genes are DE between Basal and ML cells?",
-    LPvsML = "Which genes are DE between LP and ML cells?"
+    BasalvsLP = list(
+      description = "Test of differential gene expression between Basal and LP cells",
+      entrez = "NCBI entrez id",
+      symbol = "HGNC symbol",
+      chrom = "chromosomal location of gene",
+      logFC = "the log2 fold change in expression between Basal and LP cells. log2(Basal/LP)",
+      AveExpr = "the average log2 expression across all experiments",
+      t = "limma moderated t statistic",
+      P.Value = "raw p-value for the comparison",
+      adj.P.Val = "adjusted p-value accounting for multiple tests. The method of Benjamini and Hochberg was used",
+      B = "the log-odds that this gene is differentially expressed"
+    ),
+    BasalvsML = list(
+      description = "Test of differential gene expression between Basal and ML cells",
+      entrez = "NCBI entrez id",
+      symbol = "HGNC symbol",
+      chrom = "chromosomal location of gene",
+      logFC = "the log2 fold change in expression between Basal and ML cells. log2(Basal/ML)",
+      AveExpr = "the average log2 expression across all experiments",
+      t = "limma moderated t statistic",
+      P.Value = "raw p-value for the comparison",
+      adj.P.Val = "adjusted p-value accounting for multiple tests. The method of Benjamini and Hochberg was used",
+      B = "the log-odds that this gene is differentially expressed"
+  ),
+  LPvsML = list(
+    description = "Test of differential gene expression between LP and ML cells",
+    entrez = "NCBI entrez id",
+    symbol = "HGNC symbol",
+    chrom = "chromosomal location of gene",
+    logFC = "the log2 fold change in expression between LP and ML cells. log2(LP/ML)",
+    AveExpr = "the average log2 expression across all experiments",
+    t = "limma moderated t statistic",
+    P.Value = "raw p-value for the comparison",
+    adj.P.Val = "adjusted p-value accounting for multiple tests. The method of Benjamini and Hochberg was used",
+    B = "the log-odds that this gene is differentially expressed"
+  )
   )
 )
+
 study <- addTests(study, tests)
 
 # Linkouts to external resources for the results table -------------------------
